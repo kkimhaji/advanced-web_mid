@@ -3,7 +3,7 @@ const $list = document.getElementById("list");//내용
 const CONTENT_NUM = 10; //10개씩 보이기
 let amount = CONTENT_NUM;
 const $showMoreBtn = document.querySelector('.btn'); //더보기 버튼
-
+// const $loadmark = document.getElementById(loading);
 const tabName = {0: "recent", 1: "view", 2: "popular"};
 let tabNum = 0;//선택된 탭 숫자 
 let selectedTab = $tabs[tabNum];
@@ -46,13 +46,14 @@ function loadingText(){ //로딩 문구
 
 function displayPage(){ 
     $list.innerHTML += loadingText(); //로딩 문구 넣기
-    console.log(amount);
-    if(amount >= tabContent[tabNum].length){ //보여주는 콘텐츠 수가 데이터랑 같아지면 더보기 숨기기 
+    // $list.innerHTML += $loadmark;
+    if(amount >= tabContent[tabNum].length){ //보여주는 콘텐츠 수가 데이터보다 크거나 같아지면 더보기 숨기기 
         $showMoreBtn.style.visibility = 'hidden';
     }else{
         $showMoreBtn.style.visibility = 'visible';
     }
     setTimeout(()=>{
+
         const contents = tabContent[tabNum]; //데이터 
         drawContents(contents, amount);
     }, 1000); //1초 후에 띄우기
@@ -97,6 +98,4 @@ function makeContents(data){ //넣기
 function showmore(){ //더보기
     amount += CONTENT_NUM;
     displayPage();
-    // console.log(tabContent[tabNum].length);
-
 }
