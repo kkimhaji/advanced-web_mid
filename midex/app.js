@@ -2,17 +2,20 @@ const $tabs = document.querySelectorAll("li");//tab
 const $list = document.getElementById("list");//내용
 const CONTENT_NUM = 10;
 let amount = CONTENT_NUM;
-
-const tabContent = {0: viewContents, 1:recentContents, 2:popularContents} ;
-//선택한 탭과 같은 내용이 선택되도록 숫자 일치시킴
+const $showMoreBtn = document.getElementsByClassName("btn btn-default"); //더보기 버튼
 
 const tabName = {0: "recent", 1: "view", 2: "popular"};
 let tabNum = 0;//선택된 탭 숫자 
 let selectedTab = $tabs[tabNum];
+const tabContent = {0: viewContents, 1:recentContents, 2:popularContents} ;
+//선택한 탭과 같은 내용이 선택되도록 숫자 일치시킴
 
 window.onload = () => {
     selectTab();
     displayPage();
+    $showMoreBtn[0].addEventListener('click', () => { //더보기
+        showmore();
+    });
 }
 
 function activateTab(tab) { //tab active로 변경하는 함수
@@ -28,6 +31,7 @@ function selectTab() { //tab 선택
         $tab.addEventListener("click", (event) => {
             $list.innerHTML = "";
             tabNum = activateTab(event.target.parentElement);
+            amount = CONTENT_NUM; //10개 지정
             displayPage();
         });
     }
@@ -42,9 +46,9 @@ function loadingText(){ //로딩 문구
 function displayPage(){ 
     $list.innerHTML += loadingText(); //로딩 문구 넣기
     setTimeout(()=>{
-        const contents = tabContent[tabNum];
-        drawContents(contents, 10);
-    }, 1000);
+        const contents = tabContent[tabNum]; //데이터 
+        drawContents(contents, amount);
+    }, 1000); //1초 후에 띄우기
 }
 
 function drawContents(data, pages){ //내용 그리기
@@ -62,9 +66,8 @@ function drawContents(data, pages){ //내용 그리기
 }
 
 
-
 function makeContents(data){ //넣기
-    this.id=data["id"];
+    this.id=data["id"]; //js 파일의 데이터와 매핑
     this.title=data["title"];
     this.img = data["img"];
     this.cp = data["cp"];
@@ -77,9 +80,13 @@ function makeContents(data){ //넣기
                 <img src="${this.img}" class="img_thumb">
             </span>
         </span>
-        <div class="info_classify"><span class="emph_number">${cardindex}</span>
         <strong class="tit_thumb">${this.title}</strong></div>
     </a>`;
     return card;
     };
+}
+
+function showmore(){ //더보기
+    amount += CONTENT_NUM;
+    displayPage();
 }
