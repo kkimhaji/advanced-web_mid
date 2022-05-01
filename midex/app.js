@@ -7,7 +7,7 @@ const $showMoreBtn = document.querySelector('.btn'); //더보기 버튼
 const tabName = {0: "recent", 1: "view", 2: "popular"};
 let tabNum = 0;//선택된 탭 숫자 
 let selectedTab = $tabs[tabNum];
-const tabContent = {0: viewContents, 1:recentContents, 2:popularContents} ;
+const tabContent = {0: recentContents, 1: viewContents, 2:popularContents} ;
 //선택한 탭과 같은 내용이 선택되도록 숫자 일치시킴
 
 window.onload = () => {
@@ -16,7 +16,6 @@ window.onload = () => {
     $showMoreBtn.addEventListener('click', () => { //더보기
         showmore();
     });
-
 }
 
 function activateTab(tab) { //tab active로 변경하는 함수
@@ -28,6 +27,7 @@ function activateTab(tab) { //tab active로 변경하는 함수
 }
 
 function selectTab() { //tab 선택 
+
     for (const $tab of $tabs) {
         $tab.addEventListener("click", (event) => {
             $list.innerHTML = "";
@@ -46,6 +46,12 @@ function loadingText(){ //로딩 문구
 
 function displayPage(){ 
     $list.innerHTML += loadingText(); //로딩 문구 넣기
+    console.log(amount);
+    if(amount >= tabContent[tabNum].length){ //보여주는 콘텐츠 수가 데이터랑 같아지면 더보기 숨기기 
+        $showMoreBtn.style.visibility = 'hidden';
+    }else{
+        $showMoreBtn.style.visibility = 'visible';
+    }
     setTimeout(()=>{
         const contents = tabContent[tabNum]; //데이터 
         drawContents(contents, amount);
@@ -92,7 +98,5 @@ function showmore(){ //더보기
     amount += CONTENT_NUM;
     displayPage();
     // console.log(tabContent[tabNum].length);
-    if(amount === tabContent[tabNum].length){ //보여주는 콘텐츠 수가 데이터랑 같아지면 더보기 숨기기 
-        $showMoreBtn.className = "hidden";
-    }
+
 }
