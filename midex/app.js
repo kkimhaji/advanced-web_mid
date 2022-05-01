@@ -4,15 +4,17 @@ const CONTENT_NUM = 10;
 let amount = CONTENT_NUM;
 
 const tabContent = {0: viewContents, 1:recentContents, 2:popularContents} ;
+//선택한 탭과 같은 내용이 선택되도록 숫자 일치시킴
 
 const tabName = {0: "recent", 1: "view", 2: "popular"};
-let tabNum = 0;
+let tabNum = 0;//선택된 탭 숫자 
 let selectedTab = $tabs[tabNum];
 
 window.onload = () => {
     selectTab();
     displayPage();
 }
+
 function activateTab(tab) { //tab active로 변경하는 함수
     selectedTab.classList.remove("active");
     tab.classList.add("active");
@@ -31,27 +33,37 @@ function selectTab() { //tab 선택
     }
 }
 
+function loadingText(){ //로딩 문구 
+    return `<div class="text-center" id="loading-mark">
+                <span class="glyphicon glyphicon-refresh">로딩중</span>
+            </div>`;
+}
+
+function displayPage(){ 
+    $list.innerHTML += loadingText(); //로딩 문구 넣기
+    setTimeout(()=>{
+        const contents = tabContent[tabNum];
+        drawContents(contents, 10);
+    }, 1000);
+}
+
 function drawContents(data, pages){ //내용 그리기
     let cardindex = 0;
-    const ul = document.createElement('ul');
+    const ul = document.createElement('ul'); //내용 넣을 ul 추가
     for(const content of data){
         if(cardindex>=pages) break;
         const li = document.createElement('li');
         const card = new makeContents(content);
-        li.innerHTML = card.createDOM(++cardindex);
-        ul.append(li);
+        li.innerHTML = card.createDOM(++cardindex); //li에 카드(각 콘텐츠) 추가 -> ul에 넣기
+        ul.append(li); 
     }
     $list.innerHTML = "";
     $list.append(ul);
 }
 
-function displayPage(){
-    const contents = tabContent[tabNum];
-    drawContents(contents, 10);
-}
 
 
-function makeContents(data){
+function makeContents(data){ //넣기
     this.id=data["id"];
     this.title=data["title"];
     this.img = data["img"];
