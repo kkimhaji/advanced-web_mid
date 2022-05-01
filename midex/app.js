@@ -1,8 +1,8 @@
 const $tabs = document.querySelectorAll("li");//tab
 const $list = document.getElementById("list");//내용
-const CONTENT_NUM = 10;
+const CONTENT_NUM = 10; //10개씩 보이기
 let amount = CONTENT_NUM;
-const $showMoreBtn = document.getElementsByClassName("btn btn-default"); //더보기 버튼
+const $showMoreBtn = document.querySelector('.btn'); //더보기 버튼
 
 const tabName = {0: "recent", 1: "view", 2: "popular"};
 let tabNum = 0;//선택된 탭 숫자 
@@ -13,9 +13,10 @@ const tabContent = {0: viewContents, 1:recentContents, 2:popularContents} ;
 window.onload = () => {
     selectTab();
     displayPage();
-    $showMoreBtn[0].addEventListener('click', () => { //더보기
+    $showMoreBtn.addEventListener('click', () => { //더보기
         showmore();
     });
+
 }
 
 function activateTab(tab) { //tab active로 변경하는 함수
@@ -49,6 +50,7 @@ function displayPage(){
         const contents = tabContent[tabNum]; //데이터 
         drawContents(contents, amount);
     }, 1000); //1초 후에 띄우기
+
 }
 
 function drawContents(data, pages){ //내용 그리기
@@ -74,7 +76,7 @@ function makeContents(data){ //넣기
     this.url = data["url"];
 
     this.createDOM = (cardindex) =>{
-        const card = `<a href="${this.url}" class="link_classify">
+        const card = `<a href="${this.url}" class="link_c">
         <span class="wrap_thumb">
             <span class="thumb_img">
                 <img src="${this.img}" class="img_thumb">
@@ -89,4 +91,8 @@ function makeContents(data){ //넣기
 function showmore(){ //더보기
     amount += CONTENT_NUM;
     displayPage();
+    // console.log(tabContent[tabNum].length);
+    if(amount === tabContent[tabNum].length){ //보여주는 콘텐츠 수가 데이터랑 같아지면 더보기 숨기기 
+        $showMoreBtn.className = "hidden";
+    }
 }
