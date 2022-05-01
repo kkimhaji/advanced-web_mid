@@ -211,3 +211,4 @@ const viewContents = [
       url: 'https://1boon.kakao.com/maxmovie/6076920e40df72357a3ec4e4',
     },
   ];
+
